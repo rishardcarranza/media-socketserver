@@ -10,10 +10,12 @@ export class UsuariosLista {
         return usuario
     }
 
-    public actualizarNombre(id: string, nombre: string) {
+    public actualizarNombre(id: string, data: any) {
         for(let usuario of this.lista) {
             if(usuario.id === id) {
-                usuario.nombre = nombre;
+                usuario.nombre = `${data.first_name} ${data.last_name}`;
+                usuario.username = data.username;
+                usuario.email = data.email;
                 break;
             }
         }
@@ -23,7 +25,7 @@ export class UsuariosLista {
     }
 
     public getListaUsuarios() {
-        return this.lista.filter(usuario => usuario.nombre !== 'dashboard');
+        return this.lista.filter(usuario => usuario.username !== 'dashboard');
     }
 
     public getUsuario(id: string) {

@@ -8,13 +8,13 @@ export const conectarCliente = (cliente: Socket, io: SocketIO.Server) => {
     const usuario = new Usuario(cliente.id);
     usuariosConectados.agregar(usuario);
 
-    const payload = {
-        success: true,
-        hostname: 'Raspberry Pi-USO Edificio C',
-        ip: '10.10.2.48:8000'
-    };
+    // const payload = {
+    //     success: true,
+    //     hostname: 'Raspberry Pi-USO Edificio C',
+    //     ip: '10.10.2.48:8000'
+    // };
 
-    io.to(cliente.id).emit('server-info', payload);
+    // io.to(cliente.id).emit('server-info', payload);
 }
 
 export const desconectar = (cliente: Socket, io: SocketIO.Server) => {
@@ -40,15 +40,15 @@ export const mensaje = (cliente: Socket, io: SocketIO.Server) => {
 
 // Configurar usuario
 export const configurarUsuario = (cliente: Socket, io: SocketIO.Server) => {
-    cliente.on('configurar-usuario', (payload: {nombre: string}, callback: Function) => {
+    cliente.on('configurar-usuario', (payload: any, callback: Function) => {
 
-        usuariosConectados.actualizarNombre(cliente.id, payload.nombre);
+        usuariosConectados.actualizarNombre(cliente.id, payload);
 
         io.emit('usuarios-activos', usuariosConectados.getListaUsuarios());
 
         callback({
             ok: true,
-            mensaje: `Usuario ${payload.nombre}, configurado.`
+            mensaje: `Usuario ${payload.username}, configurado.`
         });
         // io.emit('mensaje-nuevo', payload);
     });
@@ -64,19 +64,20 @@ export const obtenerUsuarios = (cliente: Socket, io: SocketIO.Server) => {
     });
 }
 
-// export const requestServerInfo = (cliente: Socket, io: SocketIO.Server) => {
-//     cliente.on('get-server', () => {
+export const requestServerInfo = (cliente: Socket, io: SocketIO.Server) => {
+    cliente.on('get-server', () => {
         
-//         console.log('Server info requested...');
+        console.log('Server info requested...');
 
-//         const payload = {
-//             success: true,
-//             hostname: 'Raspberry Pi-USO Edificio C',
-//             ip: '192.168.1.4:8000'
-//         };
+        const payload = {
+            success: true,
+            hostname: 'Raspberry Pi-USO Edificio C',
+            ip: '192.168.1.4:8000'
+        };
 
-//         io.to(cliente.id).emit('server-info', payload);
+        console.log('Client id: ', cliente.id);
+        io.to(cliente.id).emit('server-info', payload);
 
-//         // io.emit('mensaje-nuevo', payload);
-//     });
-// }
+        // io.emit('mensaje-nuevo', payload);
+    });
+}

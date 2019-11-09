@@ -34,7 +34,7 @@ export default class Server {
 
         this.io.on('connection', cliente => {
             // Informacion del servidor
-            // socket.requestServerInfo(cliente, this.io);
+            socket.requestServerInfo(cliente, this.io);
 
             // Conectar cliente
             socket.conectarCliente(cliente, this.io);
